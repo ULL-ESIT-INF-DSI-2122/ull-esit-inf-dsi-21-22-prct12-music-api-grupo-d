@@ -9,6 +9,10 @@ body {
   color: white;
 }
 
+.container > h1 {
+  font-size: 100px;
+}
+
 .links {
   display: flex;
   justify-content: center;
@@ -16,7 +20,7 @@ body {
 
 .links > p {
   margin: 15px;
-  font-size: x-large;
+  font-size: 90px;
 }
 
 .links > p > a {
