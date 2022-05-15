@@ -1,7 +1,5 @@
 import { Request, Response, Router } from "express";
 import { Artist } from "../models/artist";
-import ArtistI from "../models/interfaces/interfaceArtirst";
-import { Song } from "../models/song";
 
 class ArtistRoutes {
   public router: Router;

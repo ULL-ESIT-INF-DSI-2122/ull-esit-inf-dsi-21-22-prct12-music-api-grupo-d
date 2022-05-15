@@ -1,7 +1,5 @@
 import { Request, Response, Router } from "express";
-import PlaylistI from "../models/interfaces/interfacePlaylist";
 import { Playlist } from "../models/playlist";
-import { Song } from "../models/song";
 
 class PlaylistRoutes {
   public router: Router;
@@ -27,13 +25,14 @@ class PlaylistRoutes {
 
   getPlaylistById = (req: Request, res: Response) => {
     Playlist.findById(req.params.id)
-      .populate('songs')
-      .then(result => {
-        if (result) res.status(200).json(result)
-        else res.status(404).json({message: "Playlist not Found"})
-      }).catch(err => {
-        res.status(500).json({error: err})
+      .populate("songs")
+      .then((result) => {
+        if (result) res.status(200).json(result);
+        else res.status(404).json({ message: "Playlist not Found" });
       })
+      .catch((err) => {
+        res.status(500).json({ error: err });
+      });
   };
 
   postPlaylist = async (req: Request, res: Response) => {
@@ -45,7 +44,7 @@ class PlaylistRoutes {
     newPlaylist
       .save()
       .then((result) => {
-        if (result) res.status(201).json(result)
+        if (result) res.status(201).json(result);
       })
       .catch((err) => {
         res.status(500).json({ error: err });
@@ -55,13 +54,15 @@ class PlaylistRoutes {
   putPlaylist = async (req: Request, res: Response) => {
     Playlist.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-    }).populate('songs').then((result) => {
-      if (result) res.status(200).json(result)
-      else res.status(404).json({message: "Playlist not Found"})
-    }).catch((err) => {
-      res.status(500).json({error: err});
-    });
-    
+    })
+      .populate("songs")
+      .then((result) => {
+        if (result) res.status(200).json(result);
+        else res.status(404).json({ message: "Playlist not Found" });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err });
+      });
   };
 
   deletePlaylist = (req: Request, res: Response) => {
