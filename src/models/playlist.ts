@@ -35,6 +35,10 @@ PlaylistSchema.set('toJSON', {
       returnedObject.genres = []
       returnedObject.duration = 0
     }
+
+    returnedObject.songs?.forEach((_: any, index: number) => {
+      delete returnedObject.songs[index]._id
+    })
   }
 })
 

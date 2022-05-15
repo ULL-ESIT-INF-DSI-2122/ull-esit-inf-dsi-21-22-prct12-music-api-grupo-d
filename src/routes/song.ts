@@ -9,85 +9,72 @@ class SongRoutes {
     this.router = Router();
     this.routes();
   }
-  
-  // await Promise.all([1].map(async _ => {
-  //   if (result) {
-  //     const resultArtist = await Artist.findOne({songs: {$in: result._id}})
-  //     if (resultArtist)
-  //       result["artist"] = resultArtist.name
-  //   }
-  // }))
 
   getSong = (req: Request, res: Response) => {
-    const filter = req.query.name ? {name: req.query.name.toString()} : {}
+    const filter = req.query.name ? { name: req.query.name.toString() } : {};
 
-    Song.find(filter).then(async result => {
-      if (result.length > 0)
-        res.status(200).json(result)
-      else
-        res.status(404).json({message: "Song/s not Found"})
-    }).catch(err => {
-      res.status(500).json({error: err})
-    })
+    Song.find(filter)
+      .then(async (result) => {
+        if (result.length > 0) res.status(200).json(result);
+        else res.status(404).json({ message: "Song/s not Found" });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err });
+      });
   };
 
   getSongById = (req: Request, res: Response) => {
-    Song.findById(req.params.id).then(async result => {
-      if (result)
-        res.status(200).json(result)
-      else
-        res.status(404).json({message: "Song not Found"})
-    }).catch(err => {
-      res.status(500).json({error: err})
-    })
+    Song.findById(req.params.id)
+      .then(async (result) => {
+        if (result) res.status(200).json(result);
+        else res.status(404).json({ message: "Song not Found" });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err });
+      });
   };
 
   postSong = (req: Request, res: Response) => {
     const newSong = new Song({
       name: req.body.name,
-      artist: 'Unknow Artist',
+      author: req.body.author,
       duration: req.body.duration,
       genres: req.body.genres,
       single: req.body.single,
       reproductions: req.body.reproductions,
     })
 
-    newSong.save().then(result => {
-      res.status(201).json(result)
-    }).catch(err => {
-      res.status(500).json({error: err})
-    })
+    newSong
+      .save()
+      .then((result) => {
+        res.status(201).json(result);
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err });
+      });
   };
 
   putSong = (req: Request, res: Response) => {
-    const allowedUpdates = ['name', 'duration', 'genres', 'single', 'reproductions'];
-    const requestUpdates = Object.keys(req.body);
-    const isValidUpdate = requestUpdates.every(update => allowedUpdates.includes(update));
-
-      if (!isValidUpdate) {
-        res.status(400).json({error: 'Please enter a valid update'});
-      } else {
-        Song.findByIdAndUpdate(req.params.id, req.body, {
-          new: true,
-          runValidators: true,
-        }).then((result) => {
-          if (!result) {
-            res.status(404).json({message: "Song/s not Found"});
-          } else {
-            res.status(200).json(result);
-          }
-        }).catch((err) => {
-          res.status(500).json({error: err});
-        });
-      }
+    Song.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    })
+      .then((result) => {
+        if (result) res.status(200).json(result);
+        else res.status(404).json({ message: "Song not Found" });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err });
+      });
   };
 
   deleteSong = (req: Request, res: Response) => {
-    Song.findByIdAndDelete(req.params.id).then(result => {
-      res.status(200).json(result)
-    }).catch(err => {
-      res.status(500).json({error: err})
-    })
+    Song.findByIdAndDelete(req.params.id)
+      .then((result) => {
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err });
+      });
   };
 
   routes = () => {

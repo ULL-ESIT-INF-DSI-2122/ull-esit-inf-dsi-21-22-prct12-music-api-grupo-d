@@ -38,7 +38,6 @@ ArtistSchema.set('toJSON', {
     }
     
     returnedObject.songs?.forEach((_: any, index: number) => {
-      // delete returnedObject.songs[index].artist
       delete returnedObject.songs[index]._id
     })
 

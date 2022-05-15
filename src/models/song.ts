@@ -8,8 +8,9 @@ export const SongSchema = new Schema({
     unique: true,
     required: true,
   },
-  artist: {
+  author: {
     type: String,
+    required: true,
   },
   duration: {
     type: Number,

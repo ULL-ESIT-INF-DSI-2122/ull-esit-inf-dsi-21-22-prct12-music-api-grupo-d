@@ -29,10 +29,8 @@ class PlaylistRoutes {
     Playlist.findById(req.params.id)
       .populate('songs')
       .then(result => {
-        if (result)
-          res.status(200).json(result)
-        else
-          res.status(404).json({message: "Playlist not Found"})
+        if (result) res.status(200).json(result)
+        else res.status(404).json({message: "Playlist not Found"})
       }).catch(err => {
         res.status(500).json({error: err})
       })
@@ -47,9 +45,7 @@ class PlaylistRoutes {
     newPlaylist
       .save()
       .then((result) => {
-        if (result) {
-          res.status(201).json(result);
-        }
+        if (result) res.status(201).json(result)
       })
       .catch((err) => {
         res.status(500).json({ error: err });
@@ -57,19 +53,11 @@ class PlaylistRoutes {
   };
 
   putPlaylist = async (req: Request, res: Response) => {
-    const updatePlaylist: PlaylistI = {
-      name: req.body.name,
-      songs: req.body.songs,
-    };
-
-    Playlist.findByIdAndUpdate(req.params.id, req.body.songs ? updatePlaylist : {name: req.body.name}, {
+    Playlist.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     }).populate('songs').then((result) => {
-      if (!result) {
-        res.status(404).json({message: "Playlist not Found"});
-      } else {
-        res.status(200).json(result);
-      }
+      if (result) res.status(200).json(result)
+      else res.status(404).json({message: "Playlist not Found"})
     }).catch((err) => {
       res.status(500).json({error: err});
     });

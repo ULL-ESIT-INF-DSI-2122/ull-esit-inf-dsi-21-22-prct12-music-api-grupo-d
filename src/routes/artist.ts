@@ -43,89 +43,31 @@ class ArtistRoutes {
       songs: req.body.songs,
     });
 
-    await Promise.all(newArtist.songs.map(async song => {
-      await Song.findByIdAndUpdate(song, {'artist': newArtist.name},{
-        new: true,
-      })
-    }))
-
     newArtist
       .save()
       .then((result) => {
-        if (result) {
-          res.status(201).json(result);
-        }
+        if (result) res.status(201).json(result);
       })
       .catch((err) => {
         res.status(500).json({ error: err });
       });
   };
- 
 
-  // TODO: Revisar la actualizacion porque no se esta haciendo bien.
-  // Se pone a 'Unknow Artist' todo
   putArtist = async (req: Request, res: Response) => {
-    const updateArtist: ArtistI = {
-      name: req.body.name,
-      songs: req.body.songs,
-    };
-
-    if (req.body.songs) {
-
-      // // Update Song Artist
-      // await Promise.all(updateArtist.songs.map(async song => {
-      //   await Song.findByIdAndUpdate(song, {'artist': updateArtist.name},{
-      //     new: true,
-      //   })
-      // }))
-
-      // Clear Song Artist
-      await Promise.all([1].map(async _ => {
-        const resArtist = await Artist.findById(req.params.id)
-        if (resArtist && resArtist.songs.length > 0) {
-
-          await Promise.all(resArtist.songs.map(async song => {
-            await Song.findByIdAndUpdate(song, {'artist': 'Unknow Artist'},{
-              new: true,
-            })
-          }))
-
-          await Promise.all(updateArtist.songs.map(async song => {
-            await Song.findByIdAndUpdate(song, {'artist': req.body.name ? req.body.name : resArtist.name},{
-              new: true,
-            })
-          }))
-        }
-      }))
-
-     
-    }
-
-    Artist.findByIdAndUpdate(req.params.id, req.body.songs ? updateArtist : {name: req.body.name}, {
+    Artist.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-    }).populate('songs').then((result) => {
-      if (!result) {
-        res.status(404).json({message: "Artist not Found"});
-      } else {
-        res.status(200).json(result);
-      }
-    }).catch((err) => {
-      res.status(500).json({error: err});
-    });
+    })
+      .populate("songs")
+      .then((result) => {
+        if (result) res.status(200).json(result);
+        else res.status(404).json({ message: "Artist not Found" });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err });
+      });
   };
 
   deleteArtist = async (req: Request, res: Response) => {
-    await Promise.all([1].map(async _ => {
-      const resArtist = await Artist.findById(req.params.id)
-      if (resArtist && resArtist.songs.length > 0) {
-        await Promise.all(resArtist.songs.map(async song => {
-          await Song.findByIdAndUpdate(song, {'artist': 'Unknow Artist'},{
-            new: true,
-          })
-        }))
-      }
-    }))
-
     Artist.findByIdAndDelete(req.params.id)
       .populate("songs")
       .then((result) => {

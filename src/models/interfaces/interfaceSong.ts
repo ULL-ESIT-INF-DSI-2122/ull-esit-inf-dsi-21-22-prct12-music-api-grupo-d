@@ -2,7 +2,7 @@ import { ObjectId } from "mongoose";
 
 export default interface SongI {
   name: string;
-  artist: string;
+  author: string;
   duration: number;
   genres: string[];
   single: boolean;
