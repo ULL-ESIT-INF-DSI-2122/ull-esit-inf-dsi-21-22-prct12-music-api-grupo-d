@@ -2,6 +2,9 @@ import { model, Schema } from "mongoose";
 import ArtistI from "./interfaces/interfaceArtirst";
 import SongI from "./interfaces/interfaceSong";
 
+/**
+ * Esquema de Mongoose que representa a al Artista.
+ */
 export const ArtistSchema = new Schema({
   name: {
     type: String,
@@ -17,7 +20,13 @@ export const ArtistSchema = new Schema({
   versionKey : false
 });
 
-// Calcula los generos y oyentes de un artista a la hora de mostrarlo
+/**
+ * Modificamos la forma de mostrar la informacion,
+ * para poder añadirle al resultado dos datos,
+ * los listeners, que son la suma de als reproducciones de cada cancion
+ * que posee el artista; y los generos del artista que se basan en los generos de
+ * las canciones que a interpretado.
+ */
 ArtistSchema.set('toJSON', {
   transform: (_, returnedObject) => {
     const genres: string[] = []
@@ -43,5 +52,8 @@ ArtistSchema.set('toJSON', {
 
   }
 })
-  
+
+/**
+ * Modelo del Artista
+ */
 export const Artist = model<ArtistI>('Artist', ArtistSchema);

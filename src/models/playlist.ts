@@ -2,6 +2,9 @@ import { model, Schema } from "mongoose";
 import PlaylistI from "./interfaces/interfacePlaylist";
 import SongI from "./interfaces/interfaceSong";
 
+/**
+ * Esquema de Mongoose que representa Playlist.
+ */
 export const PlaylistSchema = new Schema({
   name: {
     type: String,
@@ -17,6 +20,11 @@ export const PlaylistSchema = new Schema({
   versionKey : false
 });
 
+/**
+ * Modificamos la forma de mostrar los datos,
+ * Añadiendo el dato generos, que es al concatenaciond e todos los generos de las canciones que hay, sin repetirlos.
+ * Y la suma de la duracion de las canciones.
+ */
 PlaylistSchema.set('toJSON', {
   transform: (_, returnedObject) => {
     const genres: string[] = []
@@ -42,7 +50,11 @@ PlaylistSchema.set('toJSON', {
   }
 })
 
-
+/**
+ * Convierte una string del tipo "00:00:00 | 00:00:00" a segundos en numeros
+ * @param duration String Duracion de cada cancion.
+ * @returns Resultado de la @method convertSegToHourMinSeg
+ */
 const convertStringHourToNumberSeg = (duration: string) => {
   let totalDuration: number = 0
   const durationSongs = duration.split("|")
@@ -57,15 +69,23 @@ const convertStringHourToNumberSeg = (duration: string) => {
   return convertSegToHourMinSeg(totalDuration)
 }
 
+/**
+ * Convierte de segundos a 00:00:00
+ * @param duration Number Segundos
+ * @returns String 00:00:00
+ */
 const convertSegToHourMinSeg = (duration: number) => {
   let hour: number | string = parseInt((duration / 3600).toFixed(0));
   let min: number | string = parseInt((duration / 60).toFixed(0)) - 1;
   let seg: number | string = duration % 60;
-  if (hour < 10 && hour > 0) hour = "0" + hour;
-  if (min < 10 && min > 0) min = "0" + min;
-  if (seg < 10 && seg > 0) seg = "0" + seg;
+  if (hour < 10 && hour >= 0) hour = "0" + hour;
+  if (min < 10 && min >= 0) min = "0" + min;
+  if (seg < 10 && seg >= 0) seg = "0" + seg;
 
   return hour + ":" + min + ":" + seg
 }
 
+/**
+ * Modelo de la Playlist
+ */
 export const Playlist = model<PlaylistI>('Playlist', PlaylistSchema);

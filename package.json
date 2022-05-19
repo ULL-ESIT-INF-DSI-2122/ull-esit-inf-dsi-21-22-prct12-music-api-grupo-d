@@ -8,7 +8,6 @@
     "server-dev": "tsc-watch --onSuccess \"cross-env NODE_ENV=dev node dist/index.js\"",
     "server": "tsc && cross-env NODE_ENV=production node dist/index.js",
     "test": "mocha",
-    "coverage": "nyc npm test && nyc report --reporter=lcov",
     "doc": "typedoc"
   },
   "keywords": [],

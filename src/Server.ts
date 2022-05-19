@@ -10,14 +10,28 @@ import { Song } from "./models/song";
 import { Artist } from "./models/artist";
 import { Playlist } from "./models/playlist";
 
+/**
+ * Clase que representa la Aplicacion
+ */
 export default class Server {
+  /**
+   * Instancia de la Aplicacion
+   */
   private app: express.Application;
+
+  /**
+   * Constructor, que inicializa toda la Aplicacion
+   * @param port Puerto de escucha de la API
+   */
   constructor(private readonly port: number) {
     this.app = express();
     this.initApp();
     this.connectMongoDB();
   }
 
+  /**
+   * Funcion que carga la configuracion y las ruta que usara la API
+   */
   initApp = () => {
     this.app.use(morgan("dev"));
     this.app.use(express.json());
@@ -37,6 +51,9 @@ export default class Server {
     this.app.use(routes);
   };
 
+  /**
+   * Funcion que se encarga de establecer la conexion con MongoDB Atlas
+   */
   connectMongoDB = () => {
     let MONGODB_URI: string = `mongodb+srv://admin:${process.env.PWDMONGO}@music-dsi.oqoxo.mongodb.net/Music-API?retryWrites=true&w=majority`;
     
@@ -54,6 +71,9 @@ export default class Server {
       .catch((_) => console.error("Error connecting to  te database"));
   };
 
+  /**
+   * Funcion que pone a la escucha la Aplicacion.
+   */
   listen = () => {
     this.app.listen(this.port, () => {
       console.log("Server is running on port: " + this.port);
