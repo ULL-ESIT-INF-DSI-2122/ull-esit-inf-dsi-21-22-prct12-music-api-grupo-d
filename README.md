@@ -3,25 +3,6 @@
 
 ---
 
-## Calidad y seguridad del código fuente mediante Sonar Cloud
-
-<p align="center">
-    <a href="">
-        <img alt="Coveralls" src="">
-    </a>
-    <a href="">
-        <img alt="Coveralls" src="">
-    </a>
-    <a href="">
-        <img alt="Coveralls" src="">
-    </a>
-    <a href="">
-        <img alt="Coveralls" src="">
-    </a>
-</p>
-
----
-
 ## Autores: 
 
 Vlatko Jesús Marchán Sekulic | alu0101321141@ull.edu.es
@@ -34,19 +15,16 @@ Luciano Sekulic Gregoris | alu0101022239@ull.edu.es
 
 ---
 
-## 0. Recomendaciones para el correcto funcionamiento del código.
 
-* Ir al punto 1.3.3.1 Para utilizar correctamente el __Mongose Atlas__
+### 1. Introducción de la práctica.
 
----
+Se nos propone llevar a cabo una API de gestión de información musical. Para dicho desarrollo se utilizarán principalmente los paquetes _mongoose_ (para la conexion con labase de datos) y _express_ (para la configuración del servidor de la API).
 
-## 1. Introducción de la práctica.
-
-Se nos propone llevar a cabo una API de gestión de información musical. Para dicho desarrollo se utilizarán principalmente los paquetes _mongoose_ (Para la base de datos) y _express_ (Para la configuración del servidor de la API).
+>Ir al punto 3.3.1 para llevar acabo la ejecucion correcta de la aplicacion.
 
 ---
 
-### 1.1 Organización del grupo.
+### 2 Organización del grupo.
 
 Para el desarrollo de la práctica todos los integrantes del grupo se han encargado de diferentes tareas para la creación del programa, para ello se ha repartido de manera equitativa la documentación y el desarrollo del codigo.
 
@@ -54,15 +32,15 @@ Para el desarrollo de la práctica todos los integrantes del grupo se han encarg
 
 ---
 
-### 1.2 Método de desarollo.
+#### 2.1 Método de desarollo.
 
 Todos los integrantes del grupo nos hemos conectado mediante el uso de ssh a un servidor del compañero Yeixon Morales, por este motivo la mayoría de commits del desarrollo son realizados desde su cuenta github.
 
 ---
 
-### 1.3 Planteamiento del trabajo.
+### 3 Planteamiento del trabajo.
 
-#### 1.3.1 Relaciones entre las entidades.
+#### 3.1 Relaciones entre las entidades.
 
 Para el desarrollo de la practica se nos enumeran una serie de requisitos que debe contener la API a desarrollar. De estos datos de ha extraido el siguiente modelo:
 
@@ -100,7 +78,7 @@ Una vez recopilados los requisitos que debe contener nuestra aplicación procede
 
 ---
 
-#### 1.3.2 Implementación del Server (Express).
+#### 3.2 Implementación del Server (Express).
 
 Para poder implementar la API correctamente es necesario la creación de un server que nos sirva una API de HTTP basada en JSON. Para ello se utiliza el _framework Web_ de Node.js __Express__ que nos permite crear servidores web de un modo sencillo.a
 
@@ -117,7 +95,7 @@ constructor(private readonly port: number) {
   }
 ```
 
-* __initApp:__ Función que inicializa toda la API estableciendo ciertas características y rutas. Lass características se definen en las primeras 4 líneas, _morgan_ permite ver las peticiones que recibe la API, _express.json()_ Analiza las solicitudes entrantes con cargas JSON, _express.urlencoded({ extended: false }_  Analiza las requests entrantes con cargas útiles codificadas en urlencoded y se basa en body-parser. _express.static(join(\_\_dirname, "../public")_ sirve los archivos estáticos. Por otro lado, en caso de que se inicie la aplicación en modo _test_ se le añadirá un __endpoint__ que permitirá reiniciar todo el contenido de la colección test en la base de datos. Y por ultimo se le dice a la API que utilice ciertas rutas (Que se mencionarán mas adelante en el punto 1.3.4)
+* __initApp:__ Función que inicializa toda la API estableciendo ciertas características y rutas. Lass características se definen en las primeras 4 líneas, _morgan_ permite ver las peticiones que recibe la API, _express.json()_ Analiza las solicitudes entrantes con cargas JSON, _express.urlencoded({ extended: false }_  Analiza las requests entrantes con cargas útiles codificadas en urlencoded y se basa en body-parser. _express.static(join(\_\_dirname, "../public")_ sirve los archivos estáticos. Por otro lado, en caso de que se inicie la aplicación en modo _test_ se le añadirá un __endpoint__ que permitirá reiniciar todo el contenido de la colección test en la base de datos. Y por ultimo se le dice a la API que utilice ciertas rutas (Que se mencionarán mas adelante en el punto 3.4)
 
 ```typescript
   initApp = () => {
@@ -140,7 +118,7 @@ constructor(private readonly port: number) {
   };
 ```
 
-* __connectMongoDB:__ Función encargada de conectarse a la base de datos de __MongoDB Atlas__ para ello usamos _mongoose_ con su función _connect_ a la que le pasaremos la URI de la base de datos y unas opciones, en concreto _autoIndex_ que genera un _\_id_ automáticamente. Con lo que respecta al process.env se explicará más delante en el informe, concretamente en el punto 1.3.3.1
+* __connectMongoDB:__ Función encargada de conectarse a la base de datos de __MongoDB Atlas__ para ello usamos _mongoose_ con su función _connect_ a la que le pasaremos la URI de la base de datos y unas opciones, en concreto _autoIndex_ que genera un _\_id_ automáticamente. Con lo que respecta al process.env se explicará más delante en el informe, concretamente en el punto 3.3.1
 
 ```typescript
   connectMongoDB = () => {
@@ -173,16 +151,18 @@ listen = () => {
 
 ---
 
-#### 1.3.3 Implementación de la base de datos (mongoose).
-##### 1.3.3.1 .env
+#### 3.3 Implementación de la base de datos (mongoose).
+##### 3.3.1 .env
 
-Por seguridad y no publicar la contraseña de la base de datos del __MongoDB Atlas__ en github se optó por crear el fichero _.env_ el cual contiene la contraseña de dicho servico.
+Por seguridad y no publicar la contraseña de la URI para conectarse a la base de datos del __MongoDB Atlas__ en github se optó por crear el fichero _.env_ el cual contiene la contraseña de dicho servico.
 
 Para que nos funcione deberemos crear el fichero _.env_ y poner el contenido de la siguiente manera:
 
 ```
 PWDMONGO = "Aquí iría la contraseña"
 ```
+
+> Dicha contraseña, se les pondra en un comentario a la hora de la entrega.
 
 Por otro lado, tal y como se pudo ver en el método de __connectMongoDB__ se utiliza _process.env.NODE\_ENV_ este permite ejecutar la API en diferentes modos, tal y como se puede observar en el __package.json__ 
 
@@ -192,10 +172,660 @@ Por otro lado, tal y como se pudo ver en el método de __connectMongoDB__ se uti
 "server": "tsc && cross-env NODE_ENV=production node dist/index.js",
 ```
 
-##### 1.3.3.2 modelos
+##### 3.3.2 Modelos
+
+Para poder trabjar correctamente con nuestra bases de datos de MongoDB Atlas es necesario crear una serie de modelos para cada uno de los datos.
+
+Primero fue necesario crear una serie de interfaces que definieran los atributos que debía contener cada entidad:
+
+* __interfaceArtist:__ La entidad tan solo necesitará almacenar el nombre del artita y un vector con las _ObjectId_ de las canciones del mismo
+
+```typescript
+import { ObjectId } from "mongoose";
+
+export default interface ArtistI {
+  name: string;
+  songs: ObjectId[];
+}
+```
+
+* __interfacePlaylist:__ La entidad tan solo necesitará almacenar el nombre de la playlist y un vector con las _ObjectId_ de las canciones del mismo
+
+```typescript
+import { ObjectId } from "mongoose";
+
+export default interface PlaylistI {
+  name: string;
+  songs: ObjectId[];
+}
+```
+
+* __interfaceSong:__ La entidad necesitará almacenar el nombre, autor, duración, géneros y número de reproducciones de la canción y si la canción se trata de un sigle.
+
+```typescript
+export default interface SongI {
+  name: string;
+  author: string;
+  duration: number;
+  genres: string[];
+  single: boolean;
+  reproductions: number;
+}
+```
+
+Tras crear las interfaces procedemos a crear el Schema para __mongoose__ de cada entidad.
+
+* __Artist:__ Primero creamos el Schema de la entidad Artist.
+
+```ts
+export const ArtistSchema = new Schema({
+  name: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  songs: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Song'
+  }]
+},
+{
+  versionKey : false
+});
+```
+
+Desactivamos la _versionKey_ ya que no nos interesa
+
+Posteriormente modificamos el _toJSON_ para poder modificar el resultado que se le muestra al usuario. En el caso de artista se encargará de calcular automáticamente los generos y oyentes basados en el vector de música que alamacena la entidad.
+```ts
+ArtistSchema.set('toJSON', {
+  transform: (_, returnedObject) => {
+    const genres: string[] = []
+    let listeners = 0
+    if (returnedObject.songs && returnedObject.songs.length > 0 && returnedObject.songs[0].name) {
+      returnedObject.songs.forEach((song: SongI) => {
+        song.genres.forEach(genre => {
+          if (!genres.includes(genre))
+            genres.push(genre)
+          listeners += song.reproductions
+        })
+      })
+      returnedObject.genres = genres
+      returnedObject.listeners = listeners
+    } else {
+      returnedObject.genres = []
+      returnedObject.listeners = 0
+    }
+    
+    returnedObject.songs?.forEach((_: any, index: number) => {
+      delete returnedObject.songs[index]._id
+    })
+
+  }
+})
+```
+
+Tras esto creamos el modelo.
+
+```ts
+export const Artist = model<ArtistI>('Artist', ArtistSchema);
+```
+
+* __Playlist:__ Como en la anterior, creamos el esquema de Playlist.
+
+```ts
+export const PlaylistSchema = new Schema({
+  name: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  songs: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Song'
+  }]
+},
+{
+  versionKey : false
+});
+```
+
+Posteriormente modificamos el _toJSON_ para poder modificar el resultado que se le muestra al usuario. Al igual que el anterior vamos a realizar cáculos para mostrarselos al usuario y en playlist lo mismo que artistas pero tomamos la duración de cada canción y la sumamos.
+
+```ts
+PlaylistSchema.set('toJSON', {
+  transform: (_, returnedObject) => {
+    const genres: string[] = []
+    let duration: string = ""
+    if (returnedObject.songs && returnedObject.songs.length > 0 && returnedObject.songs[0].name) {
+      returnedObject.songs.forEach((song: SongI) => {
+        song.genres.forEach(genre => {
+          if (!genres.includes(genre))
+            genres.push(genre)
+            duration += song.duration + "|"
+        })
+      })
+      returnedObject.genres = genres
+      returnedObject.duration = convertStringHourToNumberSeg(duration)
+    } else {
+      returnedObject.genres = []
+      returnedObject.duration = 0
+    }
+
+    returnedObject.songs?.forEach((_: any, index: number) => {
+      delete returnedObject.songs[index]._id
+    })
+  }
+})
+```
+
+Para llevar acabo la suma de la duracion de las canciones, tuvimos que tomar la duracion de las canciones, que ya venian en un formato HH:MM:SS y ser capaz de sumar todo esto y dar un tiempo total, para eso se creo la funcion _convertStringHourToNumberSeg_ que pasaba de el formato HH:MM:SS a un numero de segundos, apra luego sumarlos y pasarlo a otra funcion _convertSegToHourMinSeg_ que convierte los segundos en el formato HH:MM:SS
 
 
+```ts
+const convertStringHourToNumberSeg = (duration: string) => {
+  let totalDuration: number = 0
+  const durationSongs = duration.split("|")
+  durationSongs.splice(durationSongs.length -1, 1)
+  
+  durationSongs.forEach(durationSong => {
+    const partdurationSong = durationSong.split(":")
+    totalDuration += parseInt(partdurationSong[0]) * 3600 + parseInt(partdurationSong[1]) * 60 + parseInt(partdurationSong[2])
+  })
+  
+  return convertSegToHourMinSeg(totalDuration)
+}
 
+const convertSegToHourMinSeg = (duration: number) => {
+  let hour: number | string = parseInt((duration / 3600).toFixed(0));
+  let min: number | string = parseInt((duration / 60).toFixed(0)) - 1;
+  let seg: number | string = duration % 60;
+  if (hour < 10 && hour > 0) hour = "0" + hour;
+  if (min < 10 && min > 0) min = "0" + min;
+  if (seg < 10 && seg > 0) seg = "0" + seg;
+
+  return hour + ":" + min + ":" + seg
+}
+```
+
+Tras esto creamos el modelo.
+
+```ts
+export const Playlist = model<PlaylistI>('Playlist', PlaylistSchema);
+```
+
+* __Song__ Como en la anterior, creamos el esquema de Song.
+
+```ts
+export const SongSchema = new Schema({
+  name: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  author: {
+    type: String,
+    required: true,
+  },
+  duration: {
+    type: Number,
+    required: true,
+  },
+  genres: [{
+    type: String,
+    required: true,
+  }],
+  single: {
+    type: Boolean,
+    required: true,
+  },
+  reproductions: {
+    type: Number,
+    required: true,
+  }
+},
+{
+  versionKey : false
+});
+```
+
+Modificamos el _toJSON_ para modificar lo que que mostraremos al usuario. Para ello tomamos la duración de la canción y la convertimos en el formato 00:00:00 haciendo uso de la función _convertSegToHourMinSeg_
+
+```ts
+SongSchema.set('toJSON', {
+  transform: (_, returnedObject) => {
+    returnedObject.duration = convertSegToHourMinSeg(returnedObject.duration)
+  }
+})
+
+const convertSegToHourMinSeg = (duration: number) => {
+  let hour: number | string = parseInt((duration / 3600).toFixed(0));
+  let min: number | string = parseInt((duration / 60).toFixed(0)) - 1;
+  let seg: number | string = duration % 60;
+  if (hour < 10 && hour > 0) hour = "0" + hour;
+  if (min < 10 && min > 0) min = "0" + min;
+  if (seg < 10 && seg > 0) seg = "0" + seg;
+
+  return hour + ":" + min + ":" + seg
+}
+```
+
+Tras esto creamos el modelo.
+
+```ts
+export const Song = model<SongI>('Song', SongSchema);
+```
 
 ---
-#### 1.3.4 Operaciones CRUD.
+#### 3.4 Routes.
+En en archivo _index.ts_ se va a encontrar la clase ***Routes*** donde se importan una instancia de rutas de las clases songRoutes, artistRoutes y playlistRoutes, indicando que la variable router tiene que usar todas las rutas que contienen las otras instancias. Para luego indicarle a la Aplicacion las rutas a usar.
+
+```ts
+export class Routes {
+  public router: Router;
+  constructor() {
+    this.router = Router();
+    this.setRouters();
+  }
+
+  setRouters = () => {
+    this.router.use(songRoutes);
+    this.router.use(artistRoutes);
+    this.router.use(playlistRoutes);
+  };
+}
+
+const routes = new Routes();
+export default routes.router;
+```
+
+* __artist:__ Aunque la clase ***artistRoutes*** contiene más funciones, la explicación solo se va a centrar en ***routes*** ya que las demás se explicarán en el apartado 3.5. En la funcion ***routes** se especifica al router, que funcion tiene que ejecutar cuando se acceda a alguna de las rutas que posee.
+
+```ts
+class ArtistRoutes {
+  public router: Router;
+
+  constructor() {
+    this.router = Router();
+    this.routes();
+  }
+
+  getArtist = (req: Request, res: Response) => {
+  };
+
+  getArtistById = (req: Request, res: Response) => {
+  };
+
+  postArtist = async (req: Request, res: Response) => {
+  };
+
+  putArtist = async (req: Request, res: Response) => {
+  };
+
+  deleteArtist = async (req: Request, res: Response) => {
+  };
+
+  routes = () => {
+    this.router.get("/artist", this.getArtist);
+    this.router.get("/artist/:id", this.getArtistById);
+    this.router.post("/artist", this.postArtist);
+    this.router.put("/artist/:id", this.putArtist);
+    this.router.delete("/artist/:id", this.deleteArtist);
+  };
+}
+
+const artistRoutes = new ArtistRoutes();
+export default artistRoutes.router;
+```
+
+* __playlist:__ En la clase ***playlistRoutes*** se realiza el mismo estilo de rutas y se han seguido las mismas pautas. Como en el fichero anterior, las funciones crud se explicarán en el siguiente apartado. 
+
+```ts
+class PlaylistRoutes {
+  public router: Router;
+
+  constructor() {
+    this.router = Router();
+    this.routes();
+  }
+
+  getPlaylist = (req: Request, res: Response) => {
+  };
+
+  getPlaylistById = (req: Request, res: Response) => {
+  };
+
+  postPlaylist = async (req: Request, res: Response) => {
+  };
+
+  putPlaylist = async (req: Request, res: Response) => {
+  };
+
+  deletePlaylist = (req: Request, res: Response) => {
+  };
+
+  routes = () => {
+    this.router.get("/playlist", this.getPlaylist);
+    this.router.get("/playlist/:id", this.getPlaylistById);
+    this.router.post("/playlist", this.postPlaylist);
+    this.router.put("/playlist/:id", this.putPlaylist);
+    this.router.delete("/playlist/:id", this.deletePlaylist);
+  };
+}
+
+const playlistRoutes = new PlaylistRoutes();
+export default playlistRoutes.router;
+
+```
+
+* __song:__ En la clase ***songRoutes*** se realiza el mismo estilo de rutas y se han seguido las mismas pautas. Como en el fichero anterior, las funciones crud se explicarán en el siguiente apartado. 
+
+```ts
+class SongRoutes {
+  public router: Router;
+
+  constructor() {
+    this.router = Router();
+    this.routes();
+  }
+
+  getSong = (req: Request, res: Response) => {
+  };
+
+  getSongById = (req: Request, res: Response) => {
+  };
+
+  postSong = (req: Request, res: Response) => {
+  };
+
+  putSong = (req: Request, res: Response) => {
+  };
+
+  deleteSong = (req: Request, res: Response) => {
+  };
+
+  routes = () => {
+    this.router.get("/song", this.getSong);
+    this.router.get("/song/:id", this.getSongById);
+    this.router.post("/song", this.postSong);
+    this.router.put("/song/:id", this.putSong);
+    this.router.delete("/song/:id", this.deleteSong);
+  };
+}
+
+const songRoutes = new SongRoutes();
+export default songRoutes.router;
+```
+---
+#### 3.5 Operaciones CRUD.
+Las operaciones CRUD (Create, Read, Update, Delete), son fundamentales para que una aplicación pueda funcionar correctamente. Se consigue mediante el uso de rutas que son las encargadas de las funciones requeridas.
+
+* __artist:__ 
+
+- __getArtist:__ Esta función requiere un nombre para devolverte al artista, sino te devuelve una lista de artistas que hay. Cabe destacar que ***.populate()*** se utiliza para mostrar los datos de lo que se le referencia, en este caso de ***songs***. 
+ 
+```ts
+getArtist = (req: Request, res: Response) => {
+  const filter = req.query.name ? { name: req.query.name.toString() } : {};
+
+  Artist.find(filter)
+    .populate("songs")
+    .then((result) => {
+      if (result.length > 0) res.status(200).json(result);
+      else res.status(404).json({ message: "Artist/s not Found" });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+};
+```
+
+- __getArtistById:__ Esta función es similar a la anterior, lo unico es que busca al artista mediante su id y luego mediante ***populate()*** muestra todas las ***songs*** que posee ese artista. 
+
+```ts
+getArtistById = (req: Request, res: Response) => {
+  Artist.findById(req.params.id)
+    .populate("songs")
+    .then((result) => {
+      if (result) res.status(200).json(result);
+      else res.status(404).json({ message: "Artist not Found" });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+};
+```
+
+- __postArtist:__ Esta función tiene como cometido "crear" un nuevo artista en el cual se requiere un nombre y sus canciones.
+
+```ts
+postArtist = async (req: Request, res: Response) => {
+  const newArtist = new Artist({
+    name: req.body.name,
+    songs: req.body.songs,
+  });
+
+  newArtist
+    .save()
+    .then((result) => {
+      if (result) res.status(201).json(result);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+};
+```
+
+- __putArtist:__ Esta función busca un artista por su id y lo actualiza para luego mediante ***populate()***  muestre todas sus canciones.
+
+```ts
+putArtist = async (req: Request, res: Response) => {
+  Artist.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  })
+    .populate("songs")
+    .then((result) => {
+      if (result) res.status(200).json(result);
+      else res.status(404).json({ message: "Artist not Found" });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+};
+```
+
+- __deleteArtist:__ Esta función elimina un artista ya existente y muestra su información para que si por algun motivo se borra sin querer hacerlo, haya una manera de poder recuperarse. 
+
+```ts
+deleteArtist = async (req: Request, res: Response) => {
+  Artist.findByIdAndDelete(req.params.id)
+    .populate("songs")
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+};
+```
+
+* __playlist:__ Este archivo realiza las mismas funciones que ***artist.ts*** pero con las playlist.
+
+```ts
+class PlaylistRoutes {
+  public router: Router;
+
+  constructor() {
+    this.router = Router();
+    this.routes();
+  }
+
+  getPlaylist = (req: Request, res: Response) => {
+    const filter = req.query.name ? { name: req.query.name.toString() } : {};
+
+    Playlist.find(filter)
+      .populate("songs")
+      .then((result) => {
+        if (result.length > 0) res.status(200).json(result);
+        else res.status(404).json({ message: "Playlist/s not Found" });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err });
+      });
+  };
+
+  getPlaylistById = (req: Request, res: Response) => {
+    Playlist.findById(req.params.id)
+      .populate("songs")
+      .then((result) => {
+        if (result) res.status(200).json(result);
+        else res.status(404).json({ message: "Playlist not Found" });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err });
+      });
+  };
+
+  postPlaylist = async (req: Request, res: Response) => {
+    const newPlaylist = new Playlist({
+      name: req.body.name,
+      songs: req.body.songs,
+    });
+
+    newPlaylist
+      .save()
+      .then((result) => {
+        if (result) res.status(201).json(result);
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err });
+      });
+  };
+
+  putPlaylist = async (req: Request, res: Response) => {
+    Playlist.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    })
+      .populate("songs")
+      .then((result) => {
+        if (result) res.status(200).json(result);
+        else res.status(404).json({ message: "Playlist not Found" });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err });
+      });
+  };
+
+  deletePlaylist = (req: Request, res: Response) => {
+    Playlist.findByIdAndDelete(req.params.id)
+      .populate("songs")
+      .then((result) => {
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err });
+      });
+  };
+
+  routes = () => {
+    this.router.get("/playlist", this.getPlaylist);
+    this.router.get("/playlist/:id", this.getPlaylistById);
+    this.router.post("/playlist", this.postPlaylist);
+    this.router.put("/playlist/:id", this.putPlaylist);
+    this.router.delete("/playlist/:id", this.deletePlaylist);
+  };
+}
+
+const playlistRoutes = new PlaylistRoutes();
+export default playlistRoutes.router;
+```
+
+* __song:__ 
+
+- __getSong:__ Permite obtener todas las canciones que se encuentras en la base de datos, tienes la opcion de a traves de una query indicar el artibuto name, y entonces te devolvera solo aquella cancion con ese nombre; en caso de no encontrar nada, devuelve un mensage con la informacion correspondiente.
+
+```ts
+getSong = (req: Request, res: Response) => {
+  const filter = req.query.name ? { name: req.query.name.toString() } : {};
+
+  Song.find(filter)
+    .then(async (result) => {
+      if (result.length > 0) res.status(200).json(result);
+      else res.status(404).json({ message: "Song/s not Found" });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+};
+```
+
+- __getSongById:__ Permite obtener una cancion dado el parameto _\_id_.
+
+```ts
+getSongById = (req: Request, res: Response) => {
+  Song.findById(req.params.id)
+    .then(async (result) => {
+      if (result) res.status(200).json(result);
+      else res.status(404).json({ message: "Song not Found" });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+};
+```
+
+__postSong:__ Permite añadir una nueva cancion a la coleccion de canciones, es necesario pasarle los datos correctos en el cuerpo de la peticion. Al guardar la nueva cancion, responde el objeto guardado.
+
+```ts
+postSong = (req: Request, res: Response) => {
+  const newSong = new Song({
+    name: req.body.name,
+    author: req.body.author,
+    duration: req.body.duration,
+    genres: req.body.genres,
+    single: req.body.single,
+    reproductions: req.body.reproductions,
+  })
+
+  newSong
+    .save()
+    .then((result) => {
+      res.status(201).json(result);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+};
+```
+
+__putSong:__ Actualiza una cancion, para saber que cancion actualisar es necesario indicar el parametro _\_id_, que la identifica, y a demas pasar en el cuerpo de la peticion, los datos que se quieran actualizar. En caso de no encontrar el objeto responde con un mensage, informando al usuario.
+
+```ts
+putSong = (req: Request, res: Response) => {
+  Song.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  })
+    .then((result) => {
+      if (result) res.status(200).json(result);
+      else res.status(404).json({ message: "Song not Found" });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+};
+```
+
+__deleteSong:__ Dado un parameto _\_id_, elimina la cancion, respondiendole al usuario cual fue el objeto borrado, para si en caso de equivocacion, el ususario quiera volver a crearlo.
+
+```ts
+deleteSong = (req: Request, res: Response) => {
+  Song.findByIdAndDelete(req.params.id)
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+};
+```
+---
