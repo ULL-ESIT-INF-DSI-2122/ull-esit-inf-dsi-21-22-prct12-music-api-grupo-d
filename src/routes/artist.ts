@@ -58,7 +58,7 @@ class ArtistRoutes {
    * @param req Request HTTP
    * @param res Response HTTP
    */
-  postArtist = async (req: Request, res: Response) => {
+  postArtist = (req: Request, res: Response) => {
     const newArtist = new Artist({
       name: req.body.name,
       songs: req.body.songs,
@@ -80,7 +80,7 @@ class ArtistRoutes {
    * @param req Request HTTP
    * @param res Response HTTP
    */
-  putArtist = async (req: Request, res: Response) => {
+  putArtist = (req: Request, res: Response) => {
     Artist.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     })
@@ -99,7 +99,7 @@ class ArtistRoutes {
    * @param req Request HTTP
    * @param res Response HTTP
    */
-  deleteArtist = async (req: Request, res: Response) => {
+  deleteArtist = (req: Request, res: Response) => {
     Artist.findByIdAndDelete(req.params.id)
       .populate("songs")
       .then((result) => {

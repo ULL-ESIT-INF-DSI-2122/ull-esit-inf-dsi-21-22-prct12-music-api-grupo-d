@@ -58,6 +58,7 @@ export default class Server {
     let MONGODB_URI: string = `mongodb+srv://admin:${process.env.PWDMONGO}@music-dsi.oqoxo.mongodb.net/Music-API?retryWrites=true&w=majority`;
     
     if (process.env.NODE_ENV === "test") {
+      console.log("========== TEST ==========")
       MONGODB_URI = `mongodb+srv://admin:${process.env.PWDMONGO}@music-dsi.oqoxo.mongodb.net/Music-API-Test?retryWrites=true&w=majority`;
     }    
     

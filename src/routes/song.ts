@@ -25,7 +25,7 @@ class SongRoutes {
     const filter = req.query.name ? { name: req.query.name.toString() } : {};
 
     Song.find(filter)
-      .then(async (result) => {
+      .then((result) => {
         if (result.length > 0) res.status(200).json(result);
         else res.status(404).json({ message: "Song/s not Found" });
       })
@@ -41,7 +41,7 @@ class SongRoutes {
    */
   getSongById = (req: Request, res: Response) => {
     Song.findById(req.params.id)
-      .then(async (result) => {
+      .then((result) => {
         if (result) res.status(200).json(result);
         else res.status(404).json({ message: "Song not Found" });
       })

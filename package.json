@@ -7,7 +7,7 @@
     "server-test": "tsc && cross-env NODE_ENV=test node dist/index.js",
     "server-dev": "tsc-watch --onSuccess \"cross-env NODE_ENV=dev node dist/index.js\"",
     "server": "tsc && cross-env NODE_ENV=production node dist/index.js",
-    "test": "mocha",
+    "test": "mocha -S -p false",
     "doc": "typedoc"
   },
   "keywords": [],

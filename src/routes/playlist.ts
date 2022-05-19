@@ -58,7 +58,7 @@ class PlaylistRoutes {
    * @param req Request HTTP
    * @param res Response HTTP
    */
-  postPlaylist = async (req: Request, res: Response) => {
+  postPlaylist = (req: Request, res: Response) => {
     const newPlaylist = new Playlist({
       name: req.body.name,
       songs: req.body.songs,
@@ -80,7 +80,7 @@ class PlaylistRoutes {
    * @param req Request HTTP
    * @param res Response HTTP
    */
-  putPlaylist = async (req: Request, res: Response) => {
+  putPlaylist = (req: Request, res: Response) => {
     Playlist.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     })
