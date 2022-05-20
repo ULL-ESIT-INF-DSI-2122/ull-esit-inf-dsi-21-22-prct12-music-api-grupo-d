@@ -4,7 +4,7 @@
   "description": "Music Information Management API",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "postinstall": "tsc",
     "server-test": "cross-env NODE_ENV=test node dist/index.js",
     "server-dev": "tsc-watch --onSuccess \"cross-env NODE_ENV=dev node dist/index.js\"",
     "server": "cross-env NODE_ENV=production node dist/index.js",
