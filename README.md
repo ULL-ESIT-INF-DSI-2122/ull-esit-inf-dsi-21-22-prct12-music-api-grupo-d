@@ -5,9 +5,9 @@
 
 ## Autores: 
 
-Vlatko Jesús Marchán Sekulic | alu0101321141@ull.edu.es
-
 Yeixon Morales Gonzalez | alu0101133324@ull.edu.es
+
+Vlatko Jesús Marchán Sekulic | alu0101321141@ull.edu.es
 
 Nicolas Vegas Rodriguez | alu0101321745@ull.edu.es
 
@@ -130,6 +130,7 @@ constructor(private readonly port: number) {
     
     const options = {
       autoIndex: true,
+      useNewUrlParser: true,
     };
     mongoose
       .connect(MONGODB_URI, options)
@@ -142,7 +143,7 @@ constructor(private readonly port: number) {
 
 ```typescript
 listen = () => {
-    this.app.listen(this.port, () => {
+    this.app.listen(this.port, '0.0.0.0', () => {
       console.log("Server is running on port: " + this.port);
     });
   };
@@ -167,9 +168,9 @@ PWDMONGO = "Aquí iría la contraseña"
 Por otro lado, tal y como se pudo ver en el método de __connectMongoDB__ se utiliza _process.env.NODE\_ENV_ este permite ejecutar la API en diferentes modos, tal y como se puede observar en el __package.json__ 
 
 ```typescript
-"server-test": "tsc && cross-env NODE_ENV=test node dist/index.js",
+"server-test": "cross-env NODE_ENV=test node dist/index.js",
 "server-dev": "tsc-watch --onSuccess \"cross-env NODE_ENV=dev node dist/index.js\"",
-"server": "tsc && cross-env NODE_ENV=production node dist/index.js",
+"server": "cross-env NODE_ENV=production node dist/index.js",
 ```
 
 ##### 3.3.2 Modelos
@@ -453,9 +454,6 @@ class ArtistRoutes {
   getArtist = (req: Request, res: Response) => {
   };
 
-  getArtistById = (req: Request, res: Response) => {
-  };
-
   postArtist = async (req: Request, res: Response) => {
   };
 
@@ -467,10 +465,9 @@ class ArtistRoutes {
 
   routes = () => {
     this.router.get("/artist", this.getArtist);
-    this.router.get("/artist/:id", this.getArtistById);
     this.router.post("/artist", this.postArtist);
-    this.router.put("/artist/:id", this.putArtist);
-    this.router.delete("/artist/:id", this.deleteArtist);
+    this.router.put("/artist", this.putArtist);
+    this.router.delete("/artist", this.deleteArtist);
   };
 }
 
@@ -492,9 +489,6 @@ class PlaylistRoutes {
   getPlaylist = (req: Request, res: Response) => {
   };
 
-  getPlaylistById = (req: Request, res: Response) => {
-  };
-
   postPlaylist = async (req: Request, res: Response) => {
   };
 
@@ -506,10 +500,9 @@ class PlaylistRoutes {
 
   routes = () => {
     this.router.get("/playlist", this.getPlaylist);
-    this.router.get("/playlist/:id", this.getPlaylistById);
     this.router.post("/playlist", this.postPlaylist);
-    this.router.put("/playlist/:id", this.putPlaylist);
-    this.router.delete("/playlist/:id", this.deletePlaylist);
+    this.router.put("/playlist", this.putPlaylist);
+    this.router.delete("/playlist", this.deletePlaylist);
   };
 }
 
@@ -532,9 +525,6 @@ class SongRoutes {
   getSong = (req: Request, res: Response) => {
   };
 
-  getSongById = (req: Request, res: Response) => {
-  };
-
   postSong = (req: Request, res: Response) => {
   };
 
@@ -546,10 +536,9 @@ class SongRoutes {
 
   routes = () => {
     this.router.get("/song", this.getSong);
-    this.router.get("/song/:id", this.getSongById);
     this.router.post("/song", this.postSong);
-    this.router.put("/song/:id", this.putSong);
-    this.router.delete("/song/:id", this.deleteSong);
+    this.router.put("/song", this.putSong);
+    this.router.delete("/song", this.deleteSong);
   };
 }
 
@@ -580,22 +569,6 @@ getArtist = (req: Request, res: Response) => {
 };
 ```
 
-- __getArtistById:__ Esta función es similar a la anterior, lo unico es que busca al artista mediante su id y luego mediante ***populate()*** muestra todas las ***songs*** que posee ese artista. 
-
-```ts
-getArtistById = (req: Request, res: Response) => {
-  Artist.findById(req.params.id)
-    .populate("songs")
-    .then((result) => {
-      if (result) res.status(200).json(result);
-      else res.status(404).json({ message: "Artist not Found" });
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err });
-    });
-};
-```
-
 - __postArtist:__ Esta función tiene como cometido "crear" un nuevo artista en el cual se requiere un nombre y sus canciones.
 
 ```ts
@@ -616,11 +589,11 @@ postArtist = async (req: Request, res: Response) => {
 };
 ```
 
-- __putArtist:__ Esta función busca un artista por su id y lo actualiza para luego mediante ***populate()***  muestre todas sus canciones.
+- __putArtist:__ Esta función busca un artista por su nombre y lo actualiza para luego mediante ***populate()***  muestre todas sus canciones.
 
 ```ts
-putArtist = async (req: Request, res: Response) => {
-  Artist.findByIdAndUpdate(req.params.id, req.body, {
+putArtist = (req: Request, res: Response) => {
+  Artist.findOneAndUpdate({name: req.query.name as String}, req.body, {
     new: true,
   })
     .populate("songs")
@@ -637,11 +610,12 @@ putArtist = async (req: Request, res: Response) => {
 - __deleteArtist:__ Esta función elimina un artista ya existente y muestra su información para que si por algun motivo se borra sin querer hacerlo, haya una manera de poder recuperarse. 
 
 ```ts
-deleteArtist = async (req: Request, res: Response) => {
-  Artist.findByIdAndDelete(req.params.id)
+deleteArtist = (req: Request, res: Response) => {
+  Artist.findOneAndDelete({name: req.query.name})
     .populate("songs")
     .then((result) => {
-      res.status(200).json(result);
+      if (result) res.status(200).json(result)
+      else res.status(404).json({ message: "Artist not Found" })
     })
     .catch((err) => {
       res.status(500).json({ error: err });
@@ -674,18 +648,6 @@ class PlaylistRoutes {
       });
   };
 
-  getPlaylistById = (req: Request, res: Response) => {
-    Playlist.findById(req.params.id)
-      .populate("songs")
-      .then((result) => {
-        if (result) res.status(200).json(result);
-        else res.status(404).json({ message: "Playlist not Found" });
-      })
-      .catch((err) => {
-        res.status(500).json({ error: err });
-      });
-  };
-
   postPlaylist = async (req: Request, res: Response) => {
     const newPlaylist = new Playlist({
       name: req.body.name,
@@ -702,8 +664,8 @@ class PlaylistRoutes {
       });
   };
 
-  putPlaylist = async (req: Request, res: Response) => {
-    Playlist.findByIdAndUpdate(req.params.id, req.body, {
+  putPlaylist = (req: Request, res: Response) => {
+    Playlist.findOneAndUpdate({name: req.query.name}, req.body, {
       new: true,
     })
       .populate("songs")
@@ -717,10 +679,11 @@ class PlaylistRoutes {
   };
 
   deletePlaylist = (req: Request, res: Response) => {
-    Playlist.findByIdAndDelete(req.params.id)
+    Playlist.findOneAndDelete({name: req.query.name})
       .populate("songs")
       .then((result) => {
-        res.status(200).json(result);
+        if (result) res.status(200).json(result)
+        else res.status(404).json({ message: "Playlist not Found" })
       })
       .catch((err) => {
         res.status(500).json({ error: err });
@@ -759,21 +722,6 @@ getSong = (req: Request, res: Response) => {
 };
 ```
 
-- __getSongById:__ Permite obtener una cancion dado el parameto _\_id_.
-
-```ts
-getSongById = (req: Request, res: Response) => {
-  Song.findById(req.params.id)
-    .then(async (result) => {
-      if (result) res.status(200).json(result);
-      else res.status(404).json({ message: "Song not Found" });
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err });
-    });
-};
-```
-
 __postSong:__ Permite añadir una nueva cancion a la coleccion de canciones, es necesario pasarle los datos correctos en el cuerpo de la peticion. Al guardar la nueva cancion, responde el objeto guardado.
 
 ```ts
@@ -798,11 +746,11 @@ postSong = (req: Request, res: Response) => {
 };
 ```
 
-__putSong:__ Actualiza una cancion, para saber que cancion actualisar es necesario indicar el parametro _\_id_, que la identifica, y a demas pasar en el cuerpo de la peticion, los datos que se quieran actualizar. En caso de no encontrar el objeto responde con un mensage, informando al usuario.
+__putSong:__ Actualiza una cancion, para saber que cancion actualizar es necesario indicar el nombre, que la identifica, y a demas pasar en el cuerpo de la peticion, los datos que se quieran actualizar. En caso de no encontrar el objeto responde con un mensage, informando al usuario.
 
 ```ts
 putSong = (req: Request, res: Response) => {
-  Song.findByIdAndUpdate(req.params.id, req.body, {
+  Song.findOneAndUpdate({name: req.query.name}, req.body, {
     new: true,
   })
     .then((result) => {
@@ -819,9 +767,10 @@ __deleteSong:__ Dado un parameto _\_id_, elimina la cancion, respondiendole al u
 
 ```ts
 deleteSong = (req: Request, res: Response) => {
-  Song.findByIdAndDelete(req.params.id)
+  Song.findOneAndDelete({name: req.query.name})
     .then((result) => {
-      res.status(200).json(result);
+      if (result) res.status(200).json(result)
+      else res.status(404).json({ message: "Song not Found" })
     })
     .catch((err) => {
       res.status(500).json({ error: err });
@@ -829,3 +778,94 @@ deleteSong = (req: Request, res: Response) => {
 };
 ```
 ---
+
+### 4 Tests.
+
+Se realizaron test con el uso de las herramientas de mocha, chai y chaiHttp. estos tests no generan un cubrimiento con Coveralls, por esto no se incluye Coveralls en el proyecto.
+
+Aqui unos ejemplos de los tests realizados:
+
+```ts
+import { chai_, expect, url } from "./0-initVar.spec";
+
+describe("Song API Tests", () => {
+  it("POST Song", (done) => {
+    chai_
+      .request(url)
+      .post("/song")
+      .send({
+        name: "Song Test 1",
+        author: "Author Test 1",
+        duration: 250,
+        genres: ["pop", "jazz"],
+        single: true,
+        reproductions: 15482,
+      })
+      .end((_: any, res: any) => {
+        expect(res).to.have.status(201);
+        expect(res.body.name).to.eql('Song Test 1')
+        expect(res.body.author).to.eql('Author Test 1')
+        expect(res.body.duration).to.eql('00:03:10')
+        expect(res.body.genres).to.eql(["pop", "jazz"])
+        expect(res.body.single).to.eql(true)
+        expect(res.body.reproductions).to.eql(15482)
+        done();
+      });
+  });
+
+  it("GET Songs", (done) => {
+    chai_
+      .request(url)
+      .get("/song")
+      .end((_: any, res: any) => {
+        expect(res).to.have.status(200);
+        expect(res.body[0].name).to.eql('Song Test 1')
+        expect(res.body[0].author).to.eql('Author Test 1')
+        expect(res.body[0].duration).to.eql('00:03:10')
+        expect(res.body[0].genres).to.eql(["pop", "jazz"])
+        expect(res.body[0].single).to.eql(true)
+        expect(res.body[0].reproductions).to.eql(15482)
+        done();
+      });
+  });
+
+  it("PUT Song", (done) => {
+    chai_
+      .request(url)
+      .put("/song")
+      .query({ name: "Song Test 1" })
+      .send({
+        reproductions: 514454,
+      })
+      .end((_: any, res: any) => {
+        expect(res).to.have.status(200);
+        expect(res.body.name).to.eql('Song Test 1')
+        expect(res.body.author).to.eql('Author Test 1')
+        expect(res.body.duration).to.eql('00:03:10')
+        expect(res.body.genres).to.eql(["pop", "jazz"])
+        expect(res.body.single).to.eql(true)
+        expect(res.body.reproductions).to.eql(514454)
+        done();
+      });
+  });
+
+  it("DELETE Song", (done) => {
+    chai_
+      .request(url)
+      .delete("/song")
+      .query({ name: "Song Test 1" })
+      .end((_: any, res: any) => {
+        expect(res).to.have.status(200);
+        expect(res.body.name).to.eql('Song Test 1')
+        expect(res.body.author).to.eql('Author Test 1')
+        expect(res.body.duration).to.eql('00:03:10')
+        expect(res.body.genres).to.eql(["pop", "jazz"])
+        expect(res.body.single).to.eql(true)
+        expect(res.body.reproductions).to.eql(514454)
+        done();
+      });
+  });
+});
+```
+
+Para el ejecucion sincrona de todos los tests, se han usado los parametros de mocha, con _-S_ hacemos un sort de los ficheros por nombre, y con el _-p false_ desactivamos la ejecucion en paralelo, para que asi se ejecuten todos los test en secunecial.
