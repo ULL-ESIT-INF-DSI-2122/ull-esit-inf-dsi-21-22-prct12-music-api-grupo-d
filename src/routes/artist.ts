@@ -17,7 +17,7 @@ class ArtistRoutes {
   }
 
   /**
-   * Permite obtener los artistas, en caso de pasarle una query con un name,
+   * Permite obtener los artistas, en caso de pasarle una query con un NAME,
    * se devuelve el artista con dicho nombre
    * @param req Request HTTP
    * @param res Response HTTP
@@ -30,23 +30,6 @@ class ArtistRoutes {
       .then((result) => {
         if (result.length > 0) res.status(200).json(result);
         else res.status(404).json({ message: "Artist/s not Found" });
-      })
-      .catch((err) => {
-        res.status(500).json({ error: err });
-      });
-  };
-
-  /**
-   * Permite obtener un artista a travez de si _id pasado como parametro.
-   * @param req Request HTTP
-   * @param res Response HTTP
-   */
-  getArtistById = (req: Request, res: Response) => {
-    Artist.findById(req.params.id)
-      .populate("songs")
-      .then((result) => {
-        if (result) res.status(200).json(result);
-        else res.status(404).json({ message: "Artist not Found" });
       })
       .catch((err) => {
         res.status(500).json({ error: err });
@@ -75,13 +58,13 @@ class ArtistRoutes {
   };
 
   /**
-   * Dado in _id como parametro, puede actualizar todos los datos de dicho
-   * objeto conincidento con la _id
+   * Dado un NAME como query, puede actualizar todos los datos de dicho
+   * objeto conincidento con el Name
    * @param req Request HTTP
    * @param res Response HTTP
    */
   putArtist = (req: Request, res: Response) => {
-    Artist.findByIdAndUpdate(req.params.id, req.body, {
+    Artist.findOneAndUpdate({name: req.query.name as String}, req.body, {
       new: true,
     })
       .populate("songs")
@@ -95,15 +78,16 @@ class ArtistRoutes {
   };
 
   /**
-   * Dado un _id como parametro, elimina el objecto conincidente
+   * Dado un NAME como query, elimina el objecto conincidente
    * @param req Request HTTP
    * @param res Response HTTP
    */
   deleteArtist = (req: Request, res: Response) => {
-    Artist.findByIdAndDelete(req.params.id)
+    Artist.findOneAndDelete({name: req.query.name})
       .populate("songs")
       .then((result) => {
-        res.status(200).json(result);
+        if (result) res.status(200).json(result)
+        else res.status(404).json({ message: "Artist not Found" })
       })
       .catch((err) => {
         res.status(500).json({ error: err });
@@ -115,10 +99,9 @@ class ArtistRoutes {
    */
   routes = () => {
     this.router.get("/artist", this.getArtist);
-    this.router.get("/artist/:id", this.getArtistById);
     this.router.post("/artist", this.postArtist);
-    this.router.put("/artist/:id", this.putArtist);
-    this.router.delete("/artist/:id", this.deleteArtist);
+    this.router.put("/artist", this.putArtist);
+    this.router.delete("/artist", this.deleteArtist);
   };
 }
 

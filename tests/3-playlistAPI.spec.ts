@@ -31,7 +31,7 @@ describe("Playlist API Tests", () => {
       });
   });
 
-  it("Get All Playlist", (done) => {
+  it("GET Playlist", (done) => {
     chai_
       .request(url)
       .get("/playlist")
@@ -42,7 +42,7 @@ describe("Playlist API Tests", () => {
       });
   });
 
-  it("Get One Playlist", (done) => {
+  it("GET Playlist By Name", (done) => {
     chai_
       .request(url)
       .get("/playlist")
@@ -54,64 +54,30 @@ describe("Playlist API Tests", () => {
       });
   });
 
-  it("GET Playlist By Id", (done) => {
+  it("PUT Playlist", (done) => {
     chai_
       .request(url)
-      .get("/playlist")
+      .put("/playlist")
       .query({ name: "Playlist Test 1" })
+      .send({songs: []})
       .end((_: any, res: any) => {
         expect(res).to.have.status(200);
-        const id = res.body[0]._id
-        chai_
-          .request(url)
-          .get(`/playlist/${id}`)
-          .end((_: any, res: any) => {
-            expect(res).to.have.status(200);
-            expect(res.body.name).to.eql('Playlist Test 1')
-            expect(res.body.songs[0].name).to.eql("Name Test 2")
-            done();
-          });
+        expect(res.body.name).to.eql('Playlist Test 1')
+        expect(res.body.songs).to.eql([])
+        done();
       });
   });
 
-  it("PUT Artist", (done) => {
+  it("DELETE Playlist", (done) => {
     chai_
       .request(url)
-      .get("/playlist")
+      .delete("/playlist")
       .query({ name: "Playlist Test 1" })
       .end((_: any, res: any) => {
         expect(res).to.have.status(200);
-        const id = res.body[0]._id
-        chai_
-          .request(url)
-          .put(`/playlist/${id}`)
-          .send({songs: []})
-          .end((_: any, res: any) => {
-            expect(res).to.have.status(200);
-            expect(res.body.name).to.eql('Playlist Test 1')
-            expect(res.body.songs).to.eql([])
-            done();
-          });
-      });
-  });
-
-  it("DELETE Artist", (done) => {
-    chai_
-      .request(url)
-      .get("/playlist")
-      .query({ name: "Playlist Test 1" })
-      .end((_: any, res: any) => {
-        expect(res).to.have.status(200);
-        const id = res.body[0]._id
-        chai_
-          .request(url)
-          .delete(`/playlist/${id}`)
-          .end((_: any, res: any) => {
-            expect(res).to.have.status(200);
-            expect(res.body.name).to.eql('Playlist Test 1')
-            expect(res.body.songs).to.eql([])
-            done();
-          });
+        expect(res.body.name).to.eql('Playlist Test 1')
+        expect(res.body.songs).to.eql([])
+        done();
       });
   });
 

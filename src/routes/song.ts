@@ -16,7 +16,7 @@ class SongRoutes {
   }
 
   /**
-   * Permite obtener las canciones, en caso de pasarle una query con un name,
+   * Permite obtener las canciones, en caso de pasarle una query con un NAME,
    * se devuelve la cancion con dicho nombre
    * @param req Request HTTP
    * @param res Response HTTP
@@ -28,22 +28,6 @@ class SongRoutes {
       .then((result) => {
         if (result.length > 0) res.status(200).json(result);
         else res.status(404).json({ message: "Song/s not Found" });
-      })
-      .catch((err) => {
-        res.status(500).json({ error: err });
-      });
-  };
-
-  /**
-   * Permite obtener una cancion a travez de si _id pasado como parametro.
-   * @param req Request HTTP
-   * @param res Response HTTP
-   */
-  getSongById = (req: Request, res: Response) => {
-    Song.findById(req.params.id)
-      .then((result) => {
-        if (result) res.status(200).json(result);
-        else res.status(404).json({ message: "Song not Found" });
       })
       .catch((err) => {
         res.status(500).json({ error: err });
@@ -76,13 +60,13 @@ class SongRoutes {
   };
 
   /**
-   * Dado in _id como parametro, puede actualizar todos los datos de dicho
-   * objeto conincidento con la _id
+   * Dado un NAME como query, puede actualizar todos los datos de dicho
+   * objeto conincidento con el NAME
    * @param req Request HTTP
    * @param res Response HTTP
    */
   putSong = (req: Request, res: Response) => {
-    Song.findByIdAndUpdate(req.params.id, req.body, {
+    Song.findOneAndUpdate({name: req.query.name}, req.body, {
       new: true,
     })
       .then((result) => {
@@ -94,15 +78,16 @@ class SongRoutes {
       });
   };
 
-  /**
-   * Dado un _id como parametro, elimina el objecto conincidente
+   /**
+   * Dado un NAME como query, elimina el objecto conincidente
    * @param req Request HTTP
    * @param res Response HTTP
    */
   deleteSong = (req: Request, res: Response) => {
-    Song.findByIdAndDelete(req.params.id)
+    Song.findOneAndDelete({name: req.query.name})
       .then((result) => {
-        res.status(200).json(result);
+        if (result) res.status(200).json(result)
+        else res.status(404).json({ message: "Song not Found" })
       })
       .catch((err) => {
         res.status(500).json({ error: err });
@@ -114,10 +99,9 @@ class SongRoutes {
    */
   routes = () => {
     this.router.get("/song", this.getSong);
-    this.router.get("/song/:id", this.getSongById);
     this.router.post("/song", this.postSong);
-    this.router.put("/song/:id", this.putSong);
-    this.router.delete("/song/:id", this.deleteSong);
+    this.router.put("/song", this.putSong);
+    this.router.delete("/song", this.deleteSong);
   };
 }
 
