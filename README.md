@@ -1,5 +1,9 @@
 # Informe Práctica 12
-## API NODE / Express de gestión de información musical.
+## API Node/Express de gestión de información musical
+
+[![Tests](https://github.com/ULL-ESIT-INF-DSI-2122/ull-esit-inf-dsi-21-22-prct12-music-api-grupo-d/actions/workflows/ci-cd.yml/badge.svg?branch=main)](https://github.com/ULL-ESIT-INF-DSI-2122/ull-esit-inf-dsi-21-22-prct12-music-api-grupo-d/actions/workflows/ci-cd.yml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ULL-ESIT-INF-DSI-2122_ull-esit-inf-dsi-21-22-prct07-music-datamodel-grupo-d&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ULL-ESIT-INF-DSI-2122_ull-esit-inf-dsi-21-22-prct12-music-api-grupo-d)
+
+Link de la [API](https://api-music-dsi.herokuapp.com/) desplegada en Heroku.
 
 ---
 
@@ -213,6 +217,8 @@ export default interface SongI {
   reproductions: number;
 }
 ```
+
+> Destacar que, ne se extendio las interfaces de Document, ya que, la misma documentacion dice que no es recomendado. [Link](https://mongoosejs.com/docs/typescript.html#using-extends-document)
 
 Tras crear las interfaces procedemos a crear el Schema para __mongoose__ de cada entidad.
 
