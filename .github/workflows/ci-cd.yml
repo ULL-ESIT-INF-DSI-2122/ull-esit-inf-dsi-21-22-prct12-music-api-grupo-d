@@ -43,5 +43,4 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "api-music-dsi" #Must be unique in Heroku
           heroku_email: ${{secrets.MY_EMAIL}}
-          branch: "dev"
-          procfile: "web: npm run server"
+          procfile: "web: npm start"
