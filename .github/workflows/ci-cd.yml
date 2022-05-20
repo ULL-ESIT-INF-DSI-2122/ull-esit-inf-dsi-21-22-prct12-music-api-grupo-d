@@ -1,0 +1,46 @@
+name: CI-CD
+
+on: [push]
+
+env:
+  PWDMONGO: ${{ secrets.PWDMONGO }}
+
+jobs:
+  test:
+    name: Test API
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build API
+        run: npm run postinstall
+
+      - name: Run API-Test
+        run: npm run server-test&
+
+      - name: Wait for API start
+        run: sleep 10s
+        shell: bash
+
+      - name: Run Test
+        run: npm run test
+      
+  heroku:
+    name: Deploy API in Heroku
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Push to heroku
+        uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "api-music-dsi" #Must be unique in Heroku
+          heroku_email: ${{secrets.MY_EMAIL}}
+          procfile: "web: npm start"

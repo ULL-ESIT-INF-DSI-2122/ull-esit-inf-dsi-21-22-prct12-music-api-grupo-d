@@ -1,6 +1,16 @@
 {
   "entryPoints": [
-    "./src/"
+    "./src/Server.ts",
+    "./src/models/interfaces/interfaceArtirst.ts",
+    "./src/models/interfaces/interfacePlaylist.ts",
+    "./src/models/interfaces/interfaceSong.ts",
+    "./src/models/artist.ts",
+    "./src/models/playlist.ts",
+    "./src/models/song.ts",
+    "./src/routes/artist.ts",
+    "./src/routes/playlist.ts",
+    "./src/routes/song.ts",
+    "./src/routes/index.ts"
   ],
   "out": "./docs"
 }
