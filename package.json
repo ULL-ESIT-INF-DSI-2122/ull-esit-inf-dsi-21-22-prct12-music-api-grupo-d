@@ -4,9 +4,10 @@
   "description": "Music Information Management API",
   "main": "index.js",
   "scripts": {
-    "server-test": "tsc && cross-env NODE_ENV=test node dist/index.js",
+    "build": "tsc",
+    "server-test": "cross-env NODE_ENV=test node dist/index.js",
     "server-dev": "tsc-watch --onSuccess \"cross-env NODE_ENV=dev node dist/index.js\"",
-    "server": "tsc && cross-env NODE_ENV=production node dist/index.js",
+    "server": "cross-env NODE_ENV=production node dist/index.js",
     "test": "mocha -S -p false",
     "doc": "typedoc"
   },
