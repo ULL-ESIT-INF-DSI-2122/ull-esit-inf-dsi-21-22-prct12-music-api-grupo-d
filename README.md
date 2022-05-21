@@ -326,8 +326,7 @@ PlaylistSchema.set('toJSON', {
 })
 ```
 
-Para llevar acabo la suma de la duracion de las canciones, tuvimos que tomar la duracion de las canciones, que ya venian en un formato HH:MM:SS y ser capaz de sumar todo esto y dar un tiempo total, para eso se creo la funcion _convertStringHourToNumberSeg_ que pasaba de el formato HH:MM:SS a un numero de segundos, apra luego sumarlos y pasarlo a otra funcion _convertSegToHourMinSeg_ que convierte los segundos en el formato HH:MM:SS
-
+Para llevar acabo la suma de la duracion de las canciones, tuvimos que tomar la duracion de las canciones, que ya venian en un formato HH:MM:SS y ser capaz de sumar todo esto y dar un tiempo total, para eso se creo la funcion _convertStringHourToNumberSeg_ que pasaba de el formato HH:MM:SS a un numero de segundos, apra luego sumarlos y pasarlo a otra funcion _convertSegToHourMinSeg_ que convierte los segundos en el formato HH:MM:SS. Estas dos funciones se encunetran un un fichero llamaod _uitls.ts_.
 
 ```ts
 const convertStringHourToNumberSeg = (duration: string) => {
@@ -404,17 +403,6 @@ SongSchema.set('toJSON', {
     returnedObject.duration = convertSegToHourMinSeg(returnedObject.duration)
   }
 })
-
-const convertSegToHourMinSeg = (duration: number) => {
-  let hour: number | string = parseInt((duration / 3600).toFixed(0));
-  let min: number | string = parseInt((duration / 60).toFixed(0)) - 1;
-  let seg: number | string = duration % 60;
-  if (hour < 10 && hour > 0) hour = "0" + hour;
-  if (min < 10 && min > 0) min = "0" + min;
-  if (seg < 10 && seg > 0) seg = "0" + seg;
-
-  return hour + ":" + min + ":" + seg
-}
 ```
 
 Tras esto creamos el modelo.
