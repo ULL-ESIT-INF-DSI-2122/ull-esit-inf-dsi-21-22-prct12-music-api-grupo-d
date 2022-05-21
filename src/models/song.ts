@@ -1,5 +1,6 @@
 import { model, Schema } from "mongoose";
 import SongI from "./interfaces/interfaceSong";
+import { convertSegToHourMinSeg } from "./utils";
 
 /**
  * Esquema de Mongoose que representa Song.
@@ -47,28 +48,6 @@ SongSchema.set("toJSON", {
     returnedObject.duration = convertSegToHourMinSeg(returnedObject.duration);
   },
 });
-
-/**
- * Convierte de segundos a 00:00:00
- * @param duration Number Segundos que dura la cancion
- * @returns String 00:00:00
- */
-const convertSegToHourMinSeg = (duration: number) => {
-  let hour: number | string = parseInt((duration / 3600).toFixed(0));
-  let min: number | string = parseInt((duration / 60).toFixed(0)) - 1;
-  let seg: number | string = duration % 60;
-  if (hour < 10 && hour >= 0) {
-    hour = "0" + hour;
-  }
-  if (min < 10 && min >= 0) {
-    min = "0" + min;
-  }
-  if (seg < 10 && seg >= 0) {
-    seg = "0" + seg;
-  }
-
-  return `${hour}:${min}:${seg}`;
-};
 
 /**
  * Modelo de Cancion
