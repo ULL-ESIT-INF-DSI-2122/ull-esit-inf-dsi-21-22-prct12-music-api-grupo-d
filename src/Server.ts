@@ -17,7 +17,7 @@ export default class Server {
   /**
    * Instancia de la Aplicacion
    */
-  private app: express.Application;
+  private readonly app: express.Application;
 
   /**
    * Constructor, que inicializa toda la Aplicacion
@@ -40,12 +40,12 @@ export default class Server {
 
     if (process.env.NODE_ENV === "test") {
       this.app.get("/reset", async (_: Request, res: Response) => {
-        await Song.deleteMany({})
-        await Artist.deleteMany({})
-        await Playlist.deleteMany({})
+        await Song.deleteMany({});
+        await Artist.deleteMany({});
+        await Playlist.deleteMany({});
 
-        res.status(200).json({message: "Reset OK"})
-      })
+        res.status(200).json({ message: "Reset OK" });
+      });
     }
 
     this.app.use(routes);
@@ -55,13 +55,13 @@ export default class Server {
    * Funcion que se encarga de establecer la conexion con MongoDB Atlas
    */
   connectMongoDB = () => {
-    let MONGODB_URI: string = `mongodb+srv://admin:${process.env.PWDMONGO}@music-dsi.oqoxo.mongodb.net/Music-API?retryWrites=true&w=majority`;
-    
+    let MONGODB_URI = `mongodb+srv://admin:${process.env.PWDMONGO}@music-dsi.oqoxo.mongodb.net/Music-API?retryWrites=true&w=majority`;
+
     if (process.env.NODE_ENV === "test") {
-      console.log("========== TEST ==========")
+      console.log("========== TEST ==========");
       MONGODB_URI = `mongodb+srv://admin:${process.env.PWDMONGO}@music-dsi.oqoxo.mongodb.net/Music-API-Test?retryWrites=true&w=majority`;
-    }    
-    
+    }
+
     const options = {
       autoIndex: true,
       useNewUrlParser: true,
@@ -76,7 +76,7 @@ export default class Server {
    * Funcion que pone a la escucha la Aplicacion.
    */
   listen = () => {
-    this.app.listen(this.port, '0.0.0.0', () => {
+    this.app.listen(this.port, "0.0.0.0", () => {
       console.log("Server is running on port: " + this.port);
     });
   };

@@ -22,12 +22,15 @@ class SongRoutes {
    * @param res Response HTTP
    */
   getSong = (req: Request, res: Response) => {
-    const filter = req.query.name ? { name: req.query.name.toString() } : {};
+    const filter = req.query.name ? { name: req.query.name as string } : {};
 
     Song.find(filter)
       .then((result) => {
-        if (result.length > 0) res.status(200).json(result);
-        else res.status(404).json({ message: "Song/s not Found" });
+        if (result.length > 0) {
+          res.status(200).json(result);
+        } else {
+          res.status(404).json({ message: "Song/s not Found" });
+        }
       })
       .catch((err) => {
         res.status(500).json({ error: err });
@@ -47,7 +50,7 @@ class SongRoutes {
       genres: req.body.genres,
       single: req.body.single,
       reproductions: req.body.reproductions,
-    })
+    });
 
     newSong
       .save()
@@ -66,28 +69,34 @@ class SongRoutes {
    * @param res Response HTTP
    */
   putSong = (req: Request, res: Response) => {
-    Song.findOneAndUpdate({name: req.query.name}, req.body, {
+    Song.findOneAndUpdate({ name: req.query.name as string }, req.body, {
       new: true,
     })
       .then((result) => {
-        if (result) res.status(200).json(result);
-        else res.status(404).json({ message: "Song not Found" });
+        if (result) {
+          res.status(200).json(result);
+        } else {
+          res.status(404).json({ message: "Song not Found" });
+        }
       })
       .catch((err) => {
         res.status(500).json({ error: err });
       });
   };
 
-   /**
+  /**
    * Dado un NAME como query, elimina el objecto conincidente
    * @param req Request HTTP
    * @param res Response HTTP
    */
   deleteSong = (req: Request, res: Response) => {
-    Song.findOneAndDelete({name: req.query.name})
+    Song.findOneAndDelete({ name: req.query.name as string })
       .then((result) => {
-        if (result) res.status(200).json(result)
-        else res.status(404).json({ message: "Song not Found" })
+        if (result) {
+          res.status(200).json(result);
+        } else {
+          res.status(404).json({ message: "Song not Found" });
+        }
       })
       .catch((err) => {
         res.status(500).json({ error: err });

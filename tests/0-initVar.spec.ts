@@ -12,7 +12,7 @@ describe("Reset DataBase", () => {
       .get("/reset")
       .end((_: any, res: any) => {
         expect(res).to.have.status(200);
-        expect(res.body.message).to.eql('Reset OK')
+        expect(res.body.message).to.eql("Reset OK");
         done();
       });
   });

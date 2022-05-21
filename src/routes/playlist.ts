@@ -1,7 +1,6 @@
 import { Request, Response, Router } from "express";
 import { Playlist } from "../models/playlist";
 
-
 /**
  * Clase que representa la agrupacion de rutas para las playlists
  */
@@ -23,13 +22,16 @@ class PlaylistRoutes {
    * @param res Response HTTP
    */
   getPlaylist = (req: Request, res: Response) => {
-    const filter = req.query.name ? { name: req.query.name.toString() } : {};
+    const filter = req.query.name ? { name: req.query.name as string} : {};
 
     Playlist.find(filter)
       .populate("songs")
       .then((result) => {
-        if (result.length > 0) res.status(200).json(result);
-        else res.status(404).json({ message: "Playlist/s not Found" });
+        if (result.length > 0) {
+          res.status(200).json(result);
+        } else {
+          res.status(404).json({ message: "Playlist/s not Found" });
+        }
       })
       .catch((err) => {
         res.status(500).json({ error: err });
@@ -50,7 +52,9 @@ class PlaylistRoutes {
     newPlaylist
       .save()
       .then((result) => {
-        if (result) res.status(201).json(result);
+        if (result) {
+          res.status(201).json(result);
+        }
       })
       .catch((err) => {
         res.status(500).json({ error: err });
@@ -64,13 +68,16 @@ class PlaylistRoutes {
    * @param res Response HTTP
    */
   putPlaylist = (req: Request, res: Response) => {
-    Playlist.findOneAndUpdate({name: req.query.name}, req.body, {
+    Playlist.findOneAndUpdate({ name: req.query.name as string }, req.body, {
       new: true,
     })
       .populate("songs")
       .then((result) => {
-        if (result) res.status(200).json(result);
-        else res.status(404).json({ message: "Playlist not Found" });
+        if (result) {
+          res.status(200).json(result);
+        } else {
+          res.status(404).json({ message: "Playlist not Found" });
+        }
       })
       .catch((err) => {
         res.status(500).json({ error: err });
@@ -83,17 +90,20 @@ class PlaylistRoutes {
    * @param res Response HTTP
    */
   deletePlaylist = (req: Request, res: Response) => {
-    Playlist.findOneAndDelete({name: req.query.name})
+    Playlist.findOneAndDelete({ name: req.query.name as string})
       .populate("songs")
       .then((result) => {
-        if (result) res.status(200).json(result)
-        else res.status(404).json({ message: "Playlist not Found" })
+        if (result) {
+          res.status(200).json(result);
+        } else {
+          res.status(404).json({ message: "Playlist not Found" });
+        }
       })
       .catch((err) => {
         res.status(500).json({ error: err });
       });
   };
-  
+
   /**
    * Indica a router, que tiene que usar esas rutas.
    */

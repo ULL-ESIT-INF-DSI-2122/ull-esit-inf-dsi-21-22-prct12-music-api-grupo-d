@@ -1,5 +1,3 @@
-import { ObjectId } from "mongoose";
-
 /**
  * Interfaz implementada por las canciones.
  * @property name: Nombre de la canción de tipo string.

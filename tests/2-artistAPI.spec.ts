@@ -24,9 +24,9 @@ describe("Artist API Tests", () => {
           })
           .end((_: any, res_: any) => {
             expect(res_).to.have.status(201);
-            expect(res_.body.name).to.eql("Artist Test 1")
-            expect(res_.body.songs).to.eql([res.body._id])
-            done()
+            expect(res_.body.name).to.eql("Artist Test 1");
+            expect(res_.body.songs).to.eql([res.body._id]);
+            done();
           });
       });
   });
@@ -37,8 +37,8 @@ describe("Artist API Tests", () => {
       .get("/artist")
       .end((_: any, res: any) => {
         expect(res).to.have.status(200);
-        expect(res.body[0].name).to.eql("Artist Test 1")
-        done()
+        expect(res.body[0].name).to.eql("Artist Test 1");
+        done();
       });
   });
 
@@ -46,11 +46,11 @@ describe("Artist API Tests", () => {
     chai_
       .request(url)
       .get("/artist")
-      .query({ name: "Artist Test 1"})
+      .query({ name: "Artist Test 1" })
       .end((_: any, res: any) => {
         expect(res).to.have.status(200);
-        expect(res.body[0].name).to.eql("Artist Test 1")
-        done()
+        expect(res.body[0].name).to.eql("Artist Test 1");
+        done();
       });
   });
 
@@ -59,11 +59,11 @@ describe("Artist API Tests", () => {
       .request(url)
       .put("/artist")
       .query({ name: "Artist Test 1" })
-      .send({songs: []})
+      .send({ songs: [] })
       .end((_: any, res: any) => {
         expect(res).to.have.status(200);
-        expect(res.body.name).to.eql('Artist Test 1')
-        expect(res.body.songs).to.eql([])
+        expect(res.body.name).to.eql("Artist Test 1");
+        expect(res.body.songs).to.eql([]);
         done();
       });
   });
@@ -75,10 +75,9 @@ describe("Artist API Tests", () => {
       .query({ name: "Artist Test 1" })
       .end((_: any, res: any) => {
         expect(res).to.have.status(200);
-        expect(res.body.name).to.eql('Artist Test 1')
-        expect(res.body.songs).to.eql([])
+        expect(res.body.name).to.eql("Artist Test 1");
+        expect(res.body.songs).to.eql([]);
         done();
       });
   });
-
 });

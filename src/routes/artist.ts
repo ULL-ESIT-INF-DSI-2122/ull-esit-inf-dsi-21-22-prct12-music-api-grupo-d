@@ -1,7 +1,6 @@
 import { Request, Response, Router } from "express";
 import { Artist } from "../models/artist";
 
-
 /**
  * Clase que representa la agrupacion de rutas para los artistas
  */
@@ -23,13 +22,16 @@ class ArtistRoutes {
    * @param res Response HTTP
    */
   getArtist = (req: Request, res: Response) => {
-    const filter = req.query.name ? { name: req.query.name.toString() } : {};
+    const filter = req.query.name ? { name: req.query.name as string } : {};
 
     Artist.find(filter)
       .populate("songs")
       .then((result) => {
-        if (result.length > 0) res.status(200).json(result);
-        else res.status(404).json({ message: "Artist/s not Found" });
+        if (result.length > 0) {
+          res.status(200).json(result);
+        } else {
+          res.status(404).json({ message: "Artist/s not Found" });
+        }
       })
       .catch((err) => {
         res.status(500).json({ error: err });
@@ -50,7 +52,9 @@ class ArtistRoutes {
     newArtist
       .save()
       .then((result) => {
-        if (result) res.status(201).json(result);
+        if (result) {
+          res.status(201).json(result);
+        }
       })
       .catch((err) => {
         res.status(500).json({ error: err });
@@ -64,13 +68,16 @@ class ArtistRoutes {
    * @param res Response HTTP
    */
   putArtist = (req: Request, res: Response) => {
-    Artist.findOneAndUpdate({name: req.query.name as String}, req.body, {
+    Artist.findOneAndUpdate({ name: req.query.name as string }, req.body, {
       new: true,
     })
       .populate("songs")
       .then((result) => {
-        if (result) res.status(200).json(result);
-        else res.status(404).json({ message: "Artist not Found" });
+        if (result) {
+          res.status(200).json(result);
+        } else {
+          res.status(404).json({ message: "Artist not Found" });
+        }
       })
       .catch((err) => {
         res.status(500).json({ error: err });
@@ -83,11 +90,14 @@ class ArtistRoutes {
    * @param res Response HTTP
    */
   deleteArtist = (req: Request, res: Response) => {
-    Artist.findOneAndDelete({name: req.query.name})
+    Artist.findOneAndDelete({ name: req.query.name as string })
       .populate("songs")
       .then((result) => {
-        if (result) res.status(200).json(result)
-        else res.status(404).json({ message: "Artist not Found" })
+        if (result) {
+          res.status(200).json(result);
+        } else {
+          res.status(404).json({ message: "Artist not Found" });
+        }
       })
       .catch((err) => {
         res.status(500).json({ error: err });

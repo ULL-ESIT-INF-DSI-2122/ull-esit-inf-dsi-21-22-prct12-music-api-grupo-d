@@ -15,12 +15,12 @@ describe("Song API Tests", () => {
       })
       .end((_: any, res: any) => {
         expect(res).to.have.status(201);
-        expect(res.body.name).to.eql('Song Test 1')
-        expect(res.body.author).to.eql('Author Test 1')
-        expect(res.body.duration).to.eql('00:03:10')
-        expect(res.body.genres).to.eql(["pop", "jazz"])
-        expect(res.body.single).to.eql(true)
-        expect(res.body.reproductions).to.eql(15482)
+        expect(res.body.name).to.eql("Song Test 1");
+        expect(res.body.author).to.eql("Author Test 1");
+        expect(res.body.duration).to.eql("00:03:10");
+        expect(res.body.genres).to.eql(["pop", "jazz"]);
+        expect(res.body.single).to.eql(true);
+        expect(res.body.reproductions).to.eql(15482);
         done();
       });
   });
@@ -31,12 +31,12 @@ describe("Song API Tests", () => {
       .get("/song")
       .end((_: any, res: any) => {
         expect(res).to.have.status(200);
-        expect(res.body[0].name).to.eql('Song Test 1')
-        expect(res.body[0].author).to.eql('Author Test 1')
-        expect(res.body[0].duration).to.eql('00:03:10')
-        expect(res.body[0].genres).to.eql(["pop", "jazz"])
-        expect(res.body[0].single).to.eql(true)
-        expect(res.body[0].reproductions).to.eql(15482)
+        expect(res.body[0].name).to.eql("Song Test 1");
+        expect(res.body[0].author).to.eql("Author Test 1");
+        expect(res.body[0].duration).to.eql("00:03:10");
+        expect(res.body[0].genres).to.eql(["pop", "jazz"]);
+        expect(res.body[0].single).to.eql(true);
+        expect(res.body[0].reproductions).to.eql(15482);
         done();
       });
   });
@@ -48,12 +48,12 @@ describe("Song API Tests", () => {
       .query({ name: "Song Test 1" })
       .end((_: any, res: any) => {
         expect(res).to.have.status(200);
-        expect(res.body[0].name).to.eql('Song Test 1')
-        expect(res.body[0].author).to.eql('Author Test 1')
-        expect(res.body[0].duration).to.eql('00:03:10')
-        expect(res.body[0].genres).to.eql(["pop", "jazz"])
-        expect(res.body[0].single).to.eql(true)
-        expect(res.body[0].reproductions).to.eql(15482)
+        expect(res.body[0].name).to.eql("Song Test 1");
+        expect(res.body[0].author).to.eql("Author Test 1");
+        expect(res.body[0].duration).to.eql("00:03:10");
+        expect(res.body[0].genres).to.eql(["pop", "jazz"]);
+        expect(res.body[0].single).to.eql(true);
+        expect(res.body[0].reproductions).to.eql(15482);
         done();
       });
   });
@@ -68,12 +68,12 @@ describe("Song API Tests", () => {
       })
       .end((_: any, res: any) => {
         expect(res).to.have.status(200);
-        expect(res.body.name).to.eql('Song Test 1')
-        expect(res.body.author).to.eql('Author Test 1')
-        expect(res.body.duration).to.eql('00:03:10')
-        expect(res.body.genres).to.eql(["pop", "jazz"])
-        expect(res.body.single).to.eql(true)
-        expect(res.body.reproductions).to.eql(514454)
+        expect(res.body.name).to.eql("Song Test 1");
+        expect(res.body.author).to.eql("Author Test 1");
+        expect(res.body.duration).to.eql("00:03:10");
+        expect(res.body.genres).to.eql(["pop", "jazz"]);
+        expect(res.body.single).to.eql(true);
+        expect(res.body.reproductions).to.eql(514454);
         done();
       });
   });
@@ -85,12 +85,12 @@ describe("Song API Tests", () => {
       .query({ name: "Song Test 1" })
       .end((_: any, res: any) => {
         expect(res).to.have.status(200);
-        expect(res.body.name).to.eql('Song Test 1')
-        expect(res.body.author).to.eql('Author Test 1')
-        expect(res.body.duration).to.eql('00:03:10')
-        expect(res.body.genres).to.eql(["pop", "jazz"])
-        expect(res.body.single).to.eql(true)
-        expect(res.body.reproductions).to.eql(514454)
+        expect(res.body.name).to.eql("Song Test 1");
+        expect(res.body.author).to.eql("Author Test 1");
+        expect(res.body.duration).to.eql("00:03:10");
+        expect(res.body.genres).to.eql(["pop", "jazz"]);
+        expect(res.body.single).to.eql(true);
+        expect(res.body.reproductions).to.eql(514454);
         done();
       });
   });
